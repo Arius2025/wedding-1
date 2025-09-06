@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risang & Dina | Wedding Landing Page</title>
+    <title>Risang & Dina | Undangan Pernikahan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/a1d0061e88.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-pink: #fbcfe8;
             --strong-pink: #e64980;
+            --light-bg: #fdf2f8;
+            --light-gray: #f9fafb;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fdf2f8;
+            background-color: var(--light-bg);
+            color: #4a5568;
             position: relative;
         }
 
@@ -26,44 +29,6 @@
         }
         .font-playfair {
             font-family: 'Playfair Display', serif;
-        }
-
-        /* Custom Section Backgrounds */
-        .section-bg {
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
-        .section-overlay {
-            position: relative;
-            z-index: 10;
-        }
-        .section-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.6); /* 60% transparent white overlay */
-            z-index: 1;
-        }
-        /* Backgrounds updated */
-        .header-bg {
-            background-image: url('https://img.freepik.com/free-vector/watercolor-floral-background-with-soft-colors_52683-28620.jpg?size=626&ext=jpg');
-        }
-        .story-bg {
-            background-image: url('https://images.pexels.com/photos/10143003/pexels-photo-10143003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-        }
-        .gallery-bg {
-            background-image: url('https://images.pexels.com/photos/10143022/pexels-photo-10143022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-        }
-        .registry-bg {
-            background-image: url('https://images.pexels.com/photos/10143004/pexels-photo-10143004.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-        }
-        .wishes-bg {
-            background-image: url('https://images.pexels.com/photos/10143024/pexels-photo-10143024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
         }
 
         /* Custom Loading Screen Animations */
@@ -79,96 +44,106 @@
             align-items: center;
             flex-direction: column;
             z-index: 1000;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1.5s ease-in-out;
         }
-
-        #loading-content {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .envelope-container {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background: #f7e9e9;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .envelope-flap {
-            position: absolute;
+        
+        /* New Double Door Animation (Full Page) */
+        .door-container {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100px;
-            background: #f7e9e9;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top;
-            transition: transform 1s ease-in-out;
-            z-index: 2;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* Added for 3D effect */
+            z-index: 999;
         }
-
-        .heart {
+        
+        .door-left, .door-right {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 50px;
-            height: 50px;
-            background: #ef4444;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            border-radius: 50% 50% 0 0;
-            transition: transform 0.8s ease-in-out;
-            z-index: 3;
+            width: 50%;
+            height: 100%;
+            /* Modified: More luxurious gradient and subtle shadow */
+            background: linear-gradient(to bottom right, #f479a3, #e64980, #d291bc);
+            transition: transform 1.5s ease-in-out;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.7);
+            /* Added: Decorative border for door-like effect */
+            border-top: 5px solid #e64980;
+            border-bottom: 5px solid #e64980;
         }
-        .heart::before, .heart::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: #ef4444;
-            border-radius: 50%;
-            top: -25px;
+        
+        .door-left {
             left: 0;
+            transform-origin: left;
         }
-        .heart::after {
-            top: 0;
-            left: 25px;
+        
+        .door-right {
+            right: 0;
+            transform-origin: right;
+        }
+        
+        .door-container.open .door-left {
+            transform: rotateY(-100deg); /* Changed for 3D effect */
+        }
+        
+        .door-container.open .door-right {
+            transform: rotateY(100deg); /* Changed for 3D effect */
         }
 
-        .open .envelope-flap {
-            transform: rotateX(180deg);
+        .loading-bar-container {
+            width: 80%;
+            height: 8px;
+            background: #f1f1f1;
+            border-radius: 4px;
+            margin-top: 20px;
+            overflow: hidden;
         }
-        .open .heart {
-            transform: translate(-50%, -50%) rotate(45deg) scale(1.5);
+        
+        .loading-bar {
+            height: 100%;
+            width: 0;
+            background: var(--strong-pink);
+            transition: width 1.5s ease-in-out;
         }
-
-        /* Larger and more petals */
+        
+        /* New: Falling Petals Animation */
         .rose-petal {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background: var(--primary-pink);
-            border-radius: 50% 50% 0 0;
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 20px;
+            height: 20px;
+            background-color: #f7a0a0;
+            border-radius: 50%;
             opacity: 0;
-            animation: fall 3s ease-in-out forwards;
+            animation: fall linear forwards;
+            pointer-events: none;
+            z-index: 999;
         }
 
         @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
         }
-        
+
         /* Gallery */
         .gallery-container {
             position: relative;
-            width: 350px;
+            width: 100%;
+            max-width: 500px;
             height: 400px;
             overflow: hidden;
         }
-
+        
         .gallery-image {
             position: absolute;
             top: 0;
@@ -179,7 +154,7 @@
             opacity: 0;
             transform: scale(1.05);
             transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
-            border-radius: 1.5rem; /* rounded-3xl equivalent */
+            border-radius: 1.5rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
         
@@ -191,9 +166,9 @@
         /* Hover effects for buttons */
         .btn-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Adjusted for more pop */
         }
-
+        
         /* Scrollbar styling for a cleaner look */
         ::-webkit-scrollbar {
             width: 8px;
@@ -219,213 +194,357 @@
             opacity: 1;
             transform: translateY(0);
         }
+        /* Custom styles for gift section */
+        .gift-card {
+            background: #fdf2f8;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+        }
+
+        /* Timeline styles */
+        .timeline-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--strong-pink);
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        .timeline-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--strong-pink);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
     <!-- Romantic Background Music -->
     <audio id="background-music" loop>
-        <!-- Please replace this URL with your own music file -->
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-romantic-ambience-908.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <!-- Loading Screen -->
     <div id="loading-screen" class="cursor-pointer">
-        <div id="loading-content">
-            <div class="envelope-container relative rounded-xl shadow-xl">
-                <div class="heart absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-1000"></div>
-                <div class="envelope-flap absolute top-0 left-0 w-full h-1/2 bg-white rounded-t-xl transition-all duration-1000 origin-top"></div>
+        <div class="door-container">
+            <div class="door-left" style="background: linear-gradient(to bottom right, #f479a3, #e64980, #d291bc);"></div>
+            <div class="door-right" style="background: linear-gradient(to bottom right, #f479a3, #e64980, #d291bc);"></div>
+            <!-- Modified: Text is now inside the door container and centered -->
+            <div class="absolute inset-0 flex items-center justify-center z-20">
+                <p id="tap-to-open" class="text-white text-3xl font-bold animate-pulse">Ketuk untuk Membuka</p>
             </div>
-            <p class="mt-8 text-xl text-gray-600 animate-pulse">Ketuk untuk Membuka</p>
         </div>
     </div>
 
     <!-- Main Content -->
     <main id="main-content" class="hidden">
-        <!-- Header Section -->
-        <header class="section-bg header-bg min-h-screen flex items-center justify-center text-center p-6">
-            <div class="section-overlay relative z-10 p-8 rounded-2xl">
-                <p class="font-playfair text-3xl sm:text-5xl text-gray-900 leading-none">Awal dari Selamanya</p>
-                <h1 class="font-sacramento text-6xl sm:text-8xl text-strong-pink mt-4 leading-none">Risang & Dina</h1>
-                <p class="text-xl sm:text-2xl mt-8 text-gray-700 font-playfair">Dua Hati, Satu Perjalanan</p>
-                <p class="text-3xl sm:text-4xl font-semibold mt-4 text-gray-900">12 Oktober 2025</p>
-            </div>
-        </header>
-
-        <!-- Story Section -->
-        <section id="our-story" class="section-bg story-bg py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="section-overlay animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Kisah Kami</h2>
-                <p class="text-gray-600 max-w-3xl mx-auto mb-10">Sejak pertemuan pertama kami, kami tahu ada sesuatu yang istimewa. Berikut adalah kilas balik momen-momen yang membawa kami ke sini.</p>
-                <div class="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
-                    <!-- The image is now a separate element, not a full background -->
-                    <img src="https://placehold.co/400x500/F5E6E8/926A7A?text=Foto+Pasangan+Romantis" alt="Foto romantis Risang dan Dina" class="w-full md:w-1/3 rounded-3xl shadow-2xl transition-transform duration-300 hover:scale-105">
-                    <div class="text-left max-w-lg">
-                        <div class="space-y-8">
-                            <div>
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-heart text-2xl text-strong-pink mr-3"></i>
-                                    <h3 class="text-2xl font-semibold text-gray-900">Pertemuan & Kencan Pertama</h3>
-                                </div>
-                                <p class="text-gray-600 leading-relaxed">Kisah kami dimulai pada **November 2024**. Kami pertama kali bertemu di **Kota Cinema Mall**, di sebelah Lippo Mall di Jember, untuk menonton film. Setelah film, kami melanjutkan kencan pertama kami berbelanja di **Roxy Mall**, yang dipenuhi tawa dan koneksi ajaib yang terasa seperti adegan dari film romantis.</p>
-                            </div>
-                            <div>
-                                <div class="flex items-center mb-2">
-                                    <i class="fas fa-ring text-2xl text-strong-pink mr-3"></i>
-                                    <h3 class="text-2xl font-semibold text-gray-900">Pertunangan</h3>
-                                </div>
-                                <p class="text-gray-600 leading-relaxed">Perjalanan kami berlanjut, mengarah ke momen indah di **April 2025** ketika Risang melamar. Itu adalah hari yang dipenuhi dengan kegembiraan dan janji, menandai awal dari babak baru kami bersama.</p>
-                            </div>
-                        </div>
+        <div class="relative z-20">
+            <!-- Navigation Bar -->
+            <nav class="fixed top-0 left-0 right-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm p-4 shadow-sm">
+                <div class="container mx-auto flex justify-between items-center">
+                    <a href="#" class="font-bold text-xl text-strong-pink">♡ D & A</a>
+                    <div class="hidden md:flex space-x-8 text-gray-700">
+                        <a href="#home" class="hover:text-strong-pink font-semibold">Home</a>
+                        <a href="#our-story" class="hover:text-strong-pink font-semibold">Our Story</a>
+                        <a href="#events" class="hover:text-strong-pink font-semibold">Events</a>
+                        <a href="#gallery" class="hover:text-strong-pink font-semibold">Gallery</a>
+                        <a href="#rsvp" class="hover:text-strong-pink font-semibold">RSVP</a>
+                        <a href="#gifts" class="hover:text-strong-pink font-semibold">Gifts</a>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Event Details Section -->
-        <section id="event-details" class="bg-primary-pink py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-12">Detail Acara</h2>
-                <div class="flex flex-col md:flex-row justify-center items-stretch gap-8">
-                    <!-- Ceremony Card -->
-                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
-                        <i class="fas fa-church text-5xl text-strong-pink mb-4"></i>
-                        <h3 class="text-3xl font-semibold text-gray-900">Akad Nikah</h3>
-                        <p class="text-gray-600 mt-2">Bergabunglah dengan kami untuk upacara sakral di mana kami akan mengikat janji suci.</p>
-                        <hr class="my-6 border-gray-300">
-                        <div class="text-left">
-                            <div class="flex items-center mb-4">
-                                <i class="fas fa-calendar-alt text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">Minggu, 12 Oktober 2025</span>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <i class="fas fa-clock text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">09:00 WIB</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-map-marker-alt text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">Kalisat, Jember</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Reception Card -->
-                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
-                        <i class="fas fa-glass-cheers text-5xl text-strong-pink mb-4"></i>
-                        <h3 class="text-3xl font-semibold text-gray-900">Resepsi</h3>
-                        <p class="text-gray-600 mt-2">Rayakan bersama kami saat kami bersulang untuk masa depan kami dan berdansa sepanjang malam.</p>
-                        <hr class="my-6 border-gray-300">
-                        <div class="text-left">
-                            <div class="flex items-center mb-4">
-                                <i class="fas fa-calendar-alt text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">Minggu, 12 Oktober 2025</span>
-                            </div>
-                            <div class="flex items-center mb-4">
-                                <i class="fas fa-clock text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">13:00 WIB</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-map-marker-alt text-xl text-strong-pink mr-3"></i>
-                                <span class="text-gray-700 font-medium">Kalisat, Jember</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gallery Section -->
-        <section id="gallery" class="section-bg gallery-bg py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="section-overlay animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Galeri Kami</h2>
-                <p class="text-gray-600 max-w-3xl mx-auto mb-10">Berikut adalah koleksi kenangan kami yang paling berharga, diabadikan dengan indah. Saksikan perjalanan kami bersama, diilustrasikan dengan cinta dan kebahagiaan.</p>
-                <div id="photo-album" class="relative overflow-hidden w-full max-w-lg mx-auto rounded-3xl shadow-2xl p-6 bg-white">
-                    <div id="gallery-container" class="relative w-full h-full gallery-container mx-auto">
-                        <img id="photo-card-1" src="https://weddingmarket.com/storage/images/artikelidea/0758102a64094028ac3f2d8df51013dc2245ec84.webp" class="gallery-image" alt="Pasangan pengantin sedang berfoto">
-                        <img id="photo-card-2" src="https://weddingmarket.com/storage/images/artikelidea/4961d32688ee98029e67a900cb85b115b87fce9c.webp" class="gallery-image" alt="Pasangan pengantin sedang berfoto">
-                        <img id="photo-card-3" src="https://cdn0-production-images-kly.akamaized.net/_CXi8LS0KaUmBh8gBxfaWEBw6Ws=/1x108:1000x671/1360x766/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3389379/original/065251900_1614571006-shutterstock_1351939871.jpg" class="gallery-image" alt="Pasangan pengantin sedang berfoto">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Wishes & Messages Section -->
-        <section id="wishes-messages" class="section-bg wishes-bg py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="section-overlay animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Harapan & Pesan</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto mb-10">Bagikan harapan tulus dan kenangan istimewa Anda dengan kami di bawah ini.</p>
-                <form id="wishes-form" class="bg-white p-8 rounded-3xl shadow-xl max-w-xl mx-auto">
-                    <div class="mb-6">
-                        <label for="wishes-name" class="block text-gray-700 text-left font-medium mb-2">Nama Anda</label>
-                        <input type="text" id="wishes-name" name="wishes-name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="message" class="block text-gray-700 text-left font-medium mb-2">Pesan Anda</label>
-                        <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required></textarea>
-                    </div>
-                    <div class="flex justify-center gap-4">
-                        <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-full font-semibold btn-hover transition-all duration-300 shadow-lg">Kirim Pesan</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-
-        <!-- RSVP Section -->
-        <section id="rsvp" class="bg-primary-pink py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Konfirmasi Kehadiran (RSVP)</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto mb-10">Mohon konfirmasikan kehadiran Anda dengan mengisi formulir di bawah ini. Kami tidak sabar untuk merayakan bersama Anda!</p>
-                <form id="rsvp-form" class="bg-white p-8 rounded-3xl shadow-xl max-w-xl mx-auto">
-                    <div class="mb-6">
-                        <label for="name" class="block text-gray-700 text-left font-medium mb-2">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="guests" class="block text-gray-700 text-left font-medium mb-2">Jumlah Tamu</label>
-                        <input type="number" id="guests" name="guests" min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
-                    </div>
-                    <div class="flex justify-center gap-4">
-                        <button type="submit" class="bg-gray-900 text-white px-8 py-4 rounded-full font-semibold btn-hover transition-all duration-300 shadow-lg">Konfirmasi Kehadiran</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <!-- Gift Registry Section -->
-        <section id="gift-registry" class="section-bg registry-bg py-20 px-6 sm:px-12 md:px-24 text-center">
-            <div class="section-overlay animate-on-scroll">
-                <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Daftar Kado</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto mb-10">Kehadiran Anda di pernikahan kami adalah hadiah terbesar yang bisa kami minta. Namun, jika Anda ingin memberi kami hadiah, kami telah menyediakan beberapa pilihan di bawah ini.</p>
-                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
-                    <!-- BRI Bank Card -->
-                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-sm transition-transform duration-300 hover:scale-105">
-                        <i class="fas fa-university text-5xl text-strong-pink mb-4"></i>
-                        <h3 class="text-3xl font-semibold text-gray-900">Bank BRI</h3>
-                        <p class="text-gray-600 mt-4">Nomor Rekening:</p>
-                        <p id="bri-account" class="text-xl font-bold mt-2 mb-4 text-gray-800">1234 5678 9012 3456</p>
-                        <button onclick="copyToClipboard('bri-account')" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium btn-hover transition-all duration-300">
-                            <i class="fas fa-copy mr-2"></i> Salin Rekening
-                        </button>
-                    </div>
-                    <!-- BSI Bank Card -->
-                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-sm transition-transform duration-300 hover:scale-105">
-                        <i class="fas fa-university text-5xl text-strong-pink mb-4"></i>
-                        <h3 class="text-3xl font-semibold text-gray-900">Bank BSI</h3>
-                        <p class="text-gray-600 mt-4">Nomor Rekening:</p>
-                        <p id="bsi-account" class="text-xl font-bold mt-2 mb-4 text-gray-800">9876 5432 1098 7654</p>
-                        <button onclick="copyToClipboard('bsi-account')" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium btn-hover transition-all duration-300">
-                            <i class="fas fa-copy mr-2"></i> Salin Rekening
+                    <div class="md:hidden">
+                        <button id="menu-button" class="text-strong-pink focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
                         </button>
                     </div>
                 </div>
-            </div>
-        </section>
+                <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white bg-opacity-90 backdrop-blur-sm shadow-md py-4 transition-all duration-300">
+                    <a href="#home" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Home</a>
+                    <a href="#our-story" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Our Story</a>
+                    <a href="#events" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Events</a>
+                    <a href="#gallery" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Gallery</a>
+                    <a href="#rsvp" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">RSVP</a>
+                    <a href="#gifts" class="block py-2 px-4 text-gray-700 hover:bg-gray-100">Gifts</a>
+                </div>
+            </nav>
 
-        <!-- Message Box for Alerts -->
-        <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50">
-            Disalin ke papan klip!
+            <!-- Header Section -->
+            <header id="home" class="min-h-screen flex items-center justify-center text-center p-6 pt-24" style="background-image: url('https://e0.pxfuel.com/wallpapers/831/611/desktop-wallpaper-abstract-flower-x-sch-ne-rosa-blume-80229-pink-abstract.jpg'); background-size: cover; background-position: center;">
+                <div class="relative z-20 animate-on-scroll">
+                    <h1 class="font-sacramento text-7xl sm:text-9xl text-strong-pink mt-4 leading-none">Risang</h1>
+                    <p class="text-strong-pink text-4xl leading-none my-4">♡</p>
+                    <h1 class="font-sacramento text-7xl sm:text-9xl text-strong-pink mt-4 leading-none">Dina</h1>
+                    <div class="bg-white bg-opacity-70 backdrop-blur-sm rounded-full inline-block px-6 py-3 mt-12 shadow-md">
+                        <p class="text-xl font-semibold text-gray-900 flex items-center justify-center">
+                            <i class="fas fa-calendar-alt text-strong-pink mr-3"></i>
+                            Minggu, 12 Oktober 2025
+                        </p>
+                    </div>
+                    <p class="text-lg sm:text-xl mt-8 max-w-lg mx-auto leading-relaxed text-gray-700">Dengan hati yang penuh cinta dan kegembiraan, kami mengundang Anda untuk merayakan awal dari perjalanan abadi kami bersama.</p>
+                    <div class="flex justify-center gap-6 mt-8">
+                        <a href="#rsvp" class="bg-strong-pink text-gray-900 px-8 py-4 rounded-full font-semibold btn-hover transition-all duration-300 shadow-lg">RSVP Sekarang</a>
+                        <a href="#our-story" class="bg-white text-gray-900 px-8 py-4 rounded-full font-semibold btn-hover transition-all duration-300 border border-strong-pink shadow-lg">Kisah Kami</a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Story Section -->
+            <section id="our-story" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-white">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Kisah Kami</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto mb-10">Sejak pertemuan pertama kami, kami tahu ada sesuatu yang istimewa. Berikut adalah kilas balik momen-momen yang membawa kami ke sini.</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
+                        <img src="https://images.pexels.com/photos/10143003/pexels-photo-10143003.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Foto romantis Risang dan Dina" class="w-full md:w-1/3 rounded-3xl shadow-2xl transition-transform duration-300 hover:scale-105">
+                        <div class="text-left max-w-lg">
+                            <div class="space-y-8">
+                                <div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-heart text-2xl text-strong-pink mr-3"></i>
+                                        <h3 class="text-2xl font-semibold text-gray-900">Pertemuan & Kencan Pertama</h3>
+                                    </div>
+                                    <p class="text-gray-600 leading-relaxed">Kisah kami dimulai pada **November 2024**. Kami pertama kali bertemu di **Kota Cinema Mall**, di sebelah Lippo Mall di Jember, untuk menonton film. Setelah film, kami melanjutkan kencan pertama kami berbelanja di **Roxy Mall**, yang dipenuhi tawa dan koneksi ajaib yang terasa seperti adegan dari film romantis.</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fas fa-ring text-2xl text-strong-pink mr-3"></i>
+                                        <h3 class="text-2xl font-semibold text-gray-900">Pertunangan</h3>
+                                    </div>
+                                    <p class="text-gray-600 leading-relaxed">Perjalanan kami berlanjut, mengarah ke momen indah di **April 2025** ketika Risang melamar. Itu adalah hari yang dipenuhi dengan kegembiraan dan janji, menandai awal dari babak baru kami bersama.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Event Details Section -->
+            <section id="events" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-gray-50">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Detail Acara</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto mb-10">Tandai kalender Anda dan bergabunglah dengan kami untuk momen spesial ini.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12">
+                        <!-- Ceremony Card -->
+                        <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                            <img src="https://images.pexels.com/photos/17584149/pexels-photo-17584149.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="The Ceremony" class="w-full h-48 object-cover rounded-2xl mb-6">
+                            <h3 class="text-3xl font-semibold text-gray-900 mb-2">Akad Nikah</h3>
+                            <div class="text-left space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-alt text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">Minggu, 12 Oktober 2025</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">09:00 WIB</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">Kalisat, Jember</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Reception Card -->
+                        <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                            <img src="https://images.pexels.com/photos/17584147/pexels-photo-17584147.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="The Reception" class="w-full h-48 object-cover rounded-2xl mb-6">
+                            <h3 class="text-3xl font-semibold text-gray-900 mb-2">Resepsi</h3>
+                            <div class="text-left space-y-3">
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-alt text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">Minggu, 12 Oktober 2025</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">13:00 WIB</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-map-marker-alt text-xl text-strong-pink mr-3"></i>
+                                    <span class="text-gray-700 font-medium">Kalisat, Jember</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Wedding Day Timeline -->
+                    <div class="bg-white p-8 rounded-3xl shadow-xl max-w-4xl mx-auto">
+                        <h3 class="font-sacramento text-4xl text-strong-pink mb-6">Wedding Day Timeline</h3>
+                        <div class="timeline-container">
+                            <div class="timeline-item">
+                                <div class="timeline-circle">1</div>
+                                <p class="text-lg font-semibold mt-4">09:00 WIB</p>
+                                <p class="text-gray-600">Akad Nikah</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-circle">2</div>
+                                <p class="text-lg font-semibold mt-4">13:00 WIB</p>
+                                <p class="text-gray-600">Resepsi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section id="gallery" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-white">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Galeri Kami</h2>
+                    <p class="text-gray-600 max-w-3xl mx-auto mb-10">Berikut adalah koleksi kenangan kami yang paling berharga, diabadikan dengan indah. Saksikan perjalanan kami bersama, diilustrasikan dengan cinta dan kebahagiaan.</p>
+                    <div id="photo-album" class="relative overflow-hidden w-full max-w-lg mx-auto rounded-3xl shadow-2xl p-6 bg-light-gray">
+                        <div id="gallery-container" class="relative w-full h-96 mx-auto gallery-container">
+                            <img id="photo-card-1" src="uploaded:image_78b559.jpg-4ff7a8cc-a0b9-43a1-bc7c-2c1797061a9d" class="gallery-image" alt="Pasangan pengantin Indonesia berpose di studio">
+                            <img id="photo-card-2" src="uploaded:image_78bc7e.png-b27f6264-0986-4eaf-82b9-d0d5d81bccea" class="gallery-image" alt="Pasangan pengantin Indonesia tersenyum romantis">
+                            <img id="photo-card-3" src="uploaded:image_78501e.png-f4ccd454-4577-4269-b763-063cc19695cf" class="gallery-image" alt="Pengantin wanita Indonesia berpose anggun">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wishes & Messages Section -->
+            <section id="wishes-messages" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-gray-50">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Harapan & Pesan</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto mb-10">Bagikan harapan tulus dan kenangan istimewa Anda dengan kami di bawah ini.</p>
+                    <form id="wishes-form" class="bg-white p-8 rounded-3xl shadow-xl max-w-xl mx-auto">
+                        <div class="mb-6">
+                            <label for="wishes-name" class="block text-gray-700 text-left font-medium mb-2">Nama Anda</label>
+                            <input type="text" id="wishes-name" name="wishes-name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 text-left font-medium mb-2">Pesan Anda</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required></textarea>
+                        </div>
+                        <div class="flex justify-center gap-4">
+                            <!-- Modified button for better visibility -->
+                            <button type="submit" class="bg-strong-pink text-gray-900 font-extrabold px-10 py-4 rounded-full btn-hover transition-all duration-300 shadow-lg">Kirim Pesan</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- RSVP Section -->
+            <section id="rsvp" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-white">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Konfirmasi Kehadiran (RSVP)</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto mb-10">Mohon konfirmasikan kehadiran Anda dengan mengisi formulir di bawah ini. Kami tidak sabar untuk merayakan bersama Anda!</p>
+                    <form id="rsvp-form" class="bg-white p-8 rounded-3xl shadow-xl max-w-xl mx-auto">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 text-left font-medium mb-2">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="guests" class="block text-gray-700 text-left font-medium mb-2">Jumlah Tamu</label>
+                            <input type="number" id="guests" name="guests" min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-strong-pink focus:border-transparent transition-colors" required>
+                        </div>
+                        <div class="flex justify-center gap-4">
+                            <!-- Modified button for better visibility -->
+                            <button type="submit" class="bg-strong-pink text-gray-900 font-extrabold px-10 py-4 rounded-full btn-hover transition-all duration-300 shadow-lg">Konfirmasi Kehadiran</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Gift Registry Section -->
+            <section id="gifts" class="py-20 px-6 sm:px-12 md:px-24 text-center bg-gray-50">
+                <div class="animate-on-scroll">
+                    <h2 class="font-sacramento text-6xl text-strong-pink mb-4">Angpao & Hadiah</h2>
+                    <p class="text-gray-600 max-w-2xl mx-auto mb-10">Kirimkan hadiah terbaik Anda dengan mudah dan aman.</p>
+                    <div class="flex flex-col md:flex-row items-stretch justify-center gap-8">
+                        <!-- Digital Gift Card -->
+                        <div class="gift-card flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                            <div class="flex flex-col items-center mb-6">
+                                <i class="fas fa-credit-card text-5xl text-strong-pink mb-3"></i>
+                                <h4 class="text-2xl font-semibold text-gray-900">Hadiah Digital</h4>
+                                <p class="text-gray-500 text-center">Kirimkan restu Anda melalui transfer bank</p>
+                            </div>
+                            <div class="space-y-6 text-left">
+                                <!-- BSI -->
+                                <div class="bg-gray-100 p-4 rounded-xl flex items-center justify-between shadow-sm">
+                                    <div>
+                                        <p class="font-medium text-gray-500">Bank BSI</p>
+                                        <p id="bsi-transfer" class="text-lg font-bold text-strong-pink">711234567890</p>
+                                        <p class="text-sm text-gray-400">a.n. Risang</p>
+                                    </div>
+                                    <i onclick="copyToClipboard('bsi-transfer')" class="fas fa-copy text-gray-400 hover:text-strong-pink cursor-pointer transition-colors"></i>
+                                </div>
+                                <!-- BRI -->
+                                <div class="bg-gray-100 p-4 rounded-xl flex items-center justify-between shadow-sm">
+                                    <div>
+                                        <p class="font-medium text-gray-500">Bank BRI</p>
+                                        <p id="bri-transfer" class="text-lg font-bold text-strong-pink">0123456789012</p>
+                                        <p class="text-sm text-gray-400">a.n. Dina</p>
+                                    </div>
+                                    <i onclick="copyToClipboard('bri-transfer')" class="fas fa-copy text-gray-400 hover:text-strong-pink cursor-pointer transition-colors"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Traditional Gift Card -->
+                        <div class="gift-card flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                            <div class="flex flex-col items-center mb-6">
+                                <i class="fas fa-gift text-5xl text-strong-pink mb-3"></i>
+                                <h4 class="text-2xl font-semibold text-gray-900">Hadiah Tradisional</h4>
+                                <p class="text-gray-500 text-center">Bawa hadiah Anda ke acara pernikahan</p>
+                            </div>
+                            <div class="text-left space-y-4">
+                                <div>
+                                    <h5 class="font-semibold text-gray-700 mb-2">Lokasi Hadiah</h5>
+                                    <p class="text-gray-600">Akan ada meja hadiah yang indah di pintu masuk tempat acara di mana Anda dapat meletakkan hadiah, kartu, dan harapan baik tradisional Anda.</p>
+                                </div>
+                                <div>
+                                    <h5 class="font-semibold text-gray-700 mb-2">Ide Hadiah</h5>
+                                    <ul class="list-disc list-inside space-y-1 text-gray-600">
+                                        <li>Barang rumah tangga untuk rumah baru kami</li>
+                                        <li>Hadiah pernikahan tradisional Indonesia</li>
+                                        <li>Kenang-kenangan yang dipersonalisasi</li>
+                                        <li>Buku atau album foto</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer class="py-8 text-center text-gray-600 text-sm bg-strong-pink bg-opacity-70 backdrop-blur-sm">
+                <p class="text-gray-800">Dibuat dengan cinta oleh Risang & Dina.</p>
+            </footer>
+
+            <!-- Message Box for Alerts -->
+            <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50">
+                Disalin ke papan klip!
+            </div>
         </div>
 
     </main>
@@ -434,25 +553,23 @@
         document.addEventListener('DOMContentLoaded', () => {
             const loadingScreen = document.getElementById('loading-screen');
             const mainContent = document.getElementById('main-content');
-            const loadingContent = document.getElementById('loading-content');
-            const rsvpForm = document.getElementById('rsvp-form');
-            const wishesForm = document.getElementById('wishes-form');
+            const doorContainer = document.querySelector('.door-container');
             const messageBox = document.getElementById('message-box');
             const backgroundMusic = document.getElementById('background-music');
+            const rsvpForm = document.getElementById('rsvp-form');
+            const wishesForm = document.getElementById('wishes-form');
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
             // Gallery Images
-            const images = [
-                document.getElementById('photo-card-1'),
-                document.getElementById('photo-card-2'),
-                document.getElementById('photo-card-3')
-            ];
+            const images = document.querySelectorAll('.gallery-image');
             let currentImageIndex = 0;
 
             // Loading Screen Animation
-            loadingContent.addEventListener('click', () => {
-                loadingContent.classList.add('open');
+            loadingScreen.addEventListener('click', () => {
+                doorContainer.classList.add('open');
                 
-                // Falling petals - more of them!
+                // Falling petals
                 for (let i = 0; i < 60; i++) {
                     setTimeout(() => {
                         const petal = document.createElement('div');
@@ -467,42 +584,42 @@
                     loadingScreen.style.opacity = '0';
                     mainContent.classList.remove('hidden');
                     document.body.style.overflow = 'auto'; // Re-enable scrolling
-                    setTimeout(() => loadingScreen.style.display = 'none', 1000);
+                    setTimeout(() => loadingScreen.style.display = 'none', 1500);
                     startPhotoAlbum(); // Start photo album when content is visible
                     setupScrollAnimations(); // Setup scroll animations
                     backgroundMusic.play().catch(e => console.log("Music play failed:", e));
                 }, 1500); // Wait for animation to finish
             });
-
+            
             // Photo Album functionality with new smooth fade effect
             function startPhotoAlbum() {
-                // Initial display of the first image
-                images[currentImageIndex].classList.add('active');
-
+                if (images.length > 0) {
+                    images[0].classList.add('active');
+                }
+                
                 setInterval(() => {
-                    // Deactivate current image
                     images[currentImageIndex].classList.remove('active');
-                    
-                    // Move to the next image
                     currentImageIndex = (currentImageIndex + 1) % images.length;
-                    
-                    // Activate the next image
                     images[currentImageIndex].classList.add('active');
-                    
                 }, 4000); // Change photos every 4 seconds
             }
+
+            // Mobile menu toggle
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
 
             // Scroll animations
             function setupScrollAnimations() {
                 const observerOptions = {
                     root: null,
                     rootMargin: '0px',
-                    threshold: 0.1 // changed threshold from 0.2 to 0.1 for smoother animation trigger
+                    threshold: 0.1
                 };
 
                 const observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting) { // Corrected from entry.is-visible
+                        if (entry.isIntersecting) {
                             entry.target.classList.add('is-visible');
                             observer.unobserve(entry.target);
                         }
@@ -532,11 +649,9 @@
                 }, 2000);
             };
 
-            // Prevent RSVP form submission and show confirmation (as alerts are not allowed)
+            // Prevent RSVP form submission and show confirmation
             rsvpForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                // In a real app, you would send this data to a server.
-                // For this static page, we'll just show a success message.
                 rsvpForm.innerHTML = `
                     <div class="text-center py-10">
                         <p class="text-2xl text-strong-pink font-semibold">Terima kasih atas respons Anda!</p>
