@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risang & Dina | Wedding Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a1d0061e88.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #fbcfe8;
+            --dark-pink: #d946ef;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+        }
+
+        .font-sacramento {
+            font-family: 'Sacramento', cursive;
+        }
+
+        /* Custom Loading Screen Animations */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            transition: opacity 1s ease-in-out;
+        }
+
+        #loading-content {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #f7e9e9;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #f7e9e9;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 1s ease-in-out;
+            z-index: 2;
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: #ef4444;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            border-radius: 50% 50% 0 0;
+            transition: transform 0.8s ease-in-out;
+            z-index: 3;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #ef4444;
+            border-radius: 50%;
+            top: -25px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: 25px;
+        }
+
+        .open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+        .open .heart {
+            transform: translate(-50%, -50%) rotate(45deg) scale(1.5);
+        }
+
+        .rose-petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-pink);
+            border-radius: 50% 50% 0 0;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            opacity: 0;
+            animation: fall 3s ease-in-out forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Gallery */
+        .photo-card {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .photo-card.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Background image for header */
+        .header-bg {
+            background-image: url('https://images.pexels.com/photos/10121703/pexels-photo-10121703.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+        }
+        .header-overlay {
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Hover effects for buttons */
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scrollbar styling for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fbcfe8;
+            border-radius: 4px;
+        }
+
+        /* Scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="cursor-pointer">
+        <div id="loading-content">
+            <div class="envelope-container relative rounded-xl shadow-xl">
+                <div class="heart absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-1000"></div>
+                <div class="envelope-flap absolute top-0 left-0 w-full h-1/2 bg-white rounded-t-xl transition-all duration-1000 origin-top"></div>
+            </div>
+            <p class="mt-8 text-xl text-gray-600 animate-pulse">Tap to Open</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="hidden">
+        <!-- Header Section -->
+        <header class="header-bg relative min-h-screen flex items-center justify-center text-center p-6">
+            <div class="header-overlay absolute inset-0"></div>
+            <div class="relative z-10 p-8 rounded-2xl">
+                <p class="font-sacramento text-4xl sm:text-6xl text-gray-900 leading-none">The Wedding Of</p>
+                <h1 class="font-sacramento text-6xl sm:text-8xl text-dark-pink mt-4 leading-none">Risang & Dina</h1>
+                <p class="text-xl sm:text-2xl mt-8 text-gray-700">Join us as we begin our new journey together.</p>
+                <p class="text-3xl sm:text-4xl font-semibold mt-4 text-gray-900">12 October 2025</p>
+            </div>
+        </header>
+
+        <!-- Story Section -->
+        <section id="our-story" class="py-20 px-6 sm:px-12 md:px-24 text-center">
+            <div class="animate-on-scroll">
+                <h2 class="font-sacramento text-6xl text-dark-pink mb-4">Our Story</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto mb-10">From our very first meeting, we knew there was something special. Here is a brief look at the moments that led us here.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20">
+                    <img src="https://placehold.co/400x500/F5E6E8/926A7A?text=Romantic+Couple+Photo" alt="A romantic photo of Risang and Dina" class="w-full md:w-1/3 rounded-3xl shadow-2xl transition-transform duration-300 hover:scale-105">
+                    <div class="text-left max-w-lg">
+                        <div class="space-y-8">
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-heart text-2xl text-dark-pink mr-3"></i>
+                                    <h3 class="text-2xl font-semibold text-gray-900">First Meeting & Date</h3>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed">Our story began in **November 2024**. We first met at **Kota Cinema Mall**, next to Lippo Mall in Jember, to watch a movie. After the movie, we shared our first date shopping at **Roxy Mall**, filled with laughter and a magical connection that felt like a scene from a romance movie.</p>
+                            </div>
+                            <div>
+                                <div class="flex items-center mb-2">
+                                    <i class="fas fa-ring text-2xl text-dark-pink mr-3"></i>
+                                    <h3 class="text-2xl font-semibold text-gray-900">The Engagement</h3>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed">Our journey continued, leading to a beautiful moment in **April 2025** when Risang proposed. It was a day filled with joy and promise, marking the start of our next chapter together.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Details Section -->
+        <section id="event-details" class="bg-primary-pink py-20 px-6 sm:px-12 md:px-24 text-center">
+            <div class="animate-on-scroll">
+                <h2 class="font-sacramento text-6xl text-dark-pink mb-12">Event Details</h2>
+                <div class="flex flex-col md:flex-row justify-center items-stretch gap-8">
+                    <!-- Ceremony Card -->
+                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                        <i class="fas fa-church text-5xl text-dark-pink mb-4"></i>
+                        <h3 class="text-3xl font-semibold text-gray-900">The Ceremony</h3>
+                        <p class="text-gray-600 mt-2">Join us for the sacred ceremony where we will exchange our vows.</p>
+                        <hr class="my-6 border-gray-300">
+                        <div class="text-left">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-calendar-alt text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">Sunday, 12 October 2025</span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">9:00 am</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">Kalisat, Jember</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Reception Card -->
+                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-lg transition-transform duration-300 hover:scale-105">
+                        <i class="fas fa-glass-cheers text-5xl text-dark-pink mb-4"></i>
+                        <h3 class="text-3xl font-semibold text-gray-900">The Reception</h3>
+                        <p class="text-gray-600 mt-2">Celebrate with us as we toast to our future and dance the night away.</p>
+                        <hr class="my-6 border-gray-300">
+                        <div class="text-left">
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-calendar-alt text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">Sunday, 12 October 2025</span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <i class="fas fa-clock text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">1:00 pm</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-xl text-dark-pink mr-3"></i>
+                                <span class="text-gray-700 font-medium">Kalisat, Jember</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-20 px-6 sm:px-12 md:px-24 text-center">
+            <div class="animate-on-scroll">
+                <h2 class="font-sacramento text-6xl text-dark-pink mb-4">Our Gallery</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto mb-10">Here’s a collection of our most cherished memories, reimagined in a charming anime style. Witness our journey together, beautifully illustrated with the bride in her hijab.</p>
+                <div id="photo-album" class="relative overflow-hidden w-full max-w-4xl mx-auto rounded-3xl shadow-2xl bg-white p-6">
+                    <div class="flex justify-center items-center gap-4">
+                        <img src="https://placehold.co/400x500/EADEEB/6A4D7B?text=Anime+Couple+1" class="photo-card active rounded-xl shadow-md w-1/2" alt="Anime style photo 1">
+                        <img src="https://placehold.co/400x500/EAE9F5/6A6F7B?text=Anime+Couple+2" class="photo-card rounded-xl shadow-md w-1/2" alt="Anime style photo 2">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSVP Section -->
+        <section id="rsvp" class="bg-primary-pink py-20 px-6 sm:px-12 md:px-24 text-center">
+            <div class="animate-on-scroll">
+                <h2 class="font-sacramento text-6xl text-dark-pink mb-4">RSVP</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-10">Please confirm your attendance by filling out the form below. We can't wait to celebrate with you!</p>
+                <form id="rsvp-form" class="bg-white p-8 rounded-3xl shadow-xl max-w-xl mx-auto">
+                    <div class="mb-6">
+                        <label for="name" class="block text-gray-700 text-left font-medium mb-2">Full Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-dark-pink focus:border-transparent transition-colors" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="guests" class="block text-gray-700 text-left font-medium mb-2">Number of Guests</label>
+                        <input type="number" id="guests" name="guests" min="1" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-dark-pink focus:border-transparent transition-colors" required>
+                    </div>
+                    <div class="flex justify-center gap-4">
+                        <button type="submit" class="bg-dark-pink text-white px-8 py-4 rounded-full font-semibold btn-hover transition-all duration-300 shadow-lg">Confirm Attendance</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Gift Registry Section -->
+        <section id="gift-registry" class="py-20 px-6 sm:px-12 md:px-24 text-center">
+            <div class="animate-on-scroll">
+                <h2 class="font-sacramento text-6xl text-dark-pink mb-4">Gift Registry</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mb-10">Your presence at our wedding is the greatest gift we could ask for. However, if you would like to honor us with a gift, we have provided a few options below.</p>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <!-- BRI Bank Card -->
+                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-sm transition-transform duration-300 hover:scale-105">
+                        <i class="fas fa-university text-5xl text-dark-pink mb-4"></i>
+                        <h3 class="text-3xl font-semibold text-gray-900">Bank BRI</h3>
+                        <p class="text-gray-600 mt-4">Account Number:</p>
+                        <p id="bri-account" class="text-xl font-bold mt-2 mb-4 text-gray-800">1234 5678 9012 3456</p>
+                        <button onclick="copyToClipboard('bri-account')" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium btn-hover transition-all duration-300">
+                            <i class="fas fa-copy mr-2"></i> Copy Account
+                        </button>
+                    </div>
+                    <!-- BSI Bank Card -->
+                    <div class="bg-white p-8 rounded-3xl shadow-xl flex-1 max-w-sm transition-transform duration-300 hover:scale-105">
+                        <i class="fas fa-university text-5xl text-dark-pink mb-4"></i>
+                        <h3 class="text-3xl font-semibold text-gray-900">Bank BSI</h3>
+                        <p class="text-gray-600 mt-4">Account Number:</p>
+                        <p id="bsi-account" class="text-xl font-bold mt-2 mb-4 text-gray-800">9876 5432 1098 7654</p>
+                        <button onclick="copyToClipboard('bsi-account')" class="bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium btn-hover transition-all duration-300">
+                            <i class="fas fa-copy mr-2"></i> Copy Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Box for Alerts -->
+        <div id="message-box" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-lg opacity-0 transition-opacity duration-300 z-50">
+            Copied to clipboard!
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const mainContent = document.getElementById('main-content');
+            const loadingContent = document.getElementById('loading-content');
+            const photoAlbum = document.getElementById('photo-album');
+            const rsvpForm = document.getElementById('rsvp-form');
+            const messageBox = document.getElementById('message-box');
+            
+            // Photo Album Images
+            const images = [
+                'https://placehold.co/400x500/EADEEB/6A4D7B?text=Anime+Couple+1',
+                'https://placehold.co/400x500/EAE9F5/6A6F7B?text=Anime+Couple+2',
+                'https://placehold.co/400x500/F0F8FF/483D8B?text=Anime+Couple+3',
+                'https://placehold.co/400x500/FFFACD/A52A2A?text=Anime+Couple+4'
+            ];
+            let currentPairIndex = 0;
+
+            // Loading Screen Animation
+            loadingContent.addEventListener('click', () => {
+                loadingContent.classList.add('open');
+                
+                // Falling petals
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const petal = document.createElement('div');
+                        petal.classList.add('rose-petal');
+                        petal.style.left = `${Math.random() * 100}vw`;
+                        petal.style.animationDuration = `${Math.random() * 2 + 2}s`;
+                        loadingScreen.appendChild(petal);
+                    }, i * 100);
+                }
+
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    mainContent.classList.remove('hidden');
+                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                    setTimeout(() => loadingScreen.style.display = 'none', 1000);
+                    startPhotoAlbum(); // Start photo album when content is visible
+                    setupScrollAnimations(); // Setup scroll animations
+                }, 1500); // Wait for animation to finish
+            });
+
+            // Photo Album functionality
+            function startPhotoAlbum() {
+                // Initial image setup
+                const photoCard1 = photoAlbum.querySelector('.photo-card:nth-of-type(1)');
+                const photoCard2 = photoAlbum.querySelector('.photo-card:nth-of-type(2)');
+                
+                photoCard1.src = images[currentPairIndex % images.length];
+                photoCard2.src = images[(currentPairIndex + 1) % images.length];
+
+                setInterval(() => {
+                    // Fade out
+                    photoAlbum.querySelectorAll('.photo-card').forEach(card => card.classList.remove('active'));
+
+                    setTimeout(() => {
+                        currentPairIndex = (currentPairIndex + 2) % images.length;
+                        photoCard1.src = images[currentPairIndex];
+                        photoCard2.src = images[(currentPairIndex + 1) % images.length];
+                        
+                        // Fade in
+                        photoAlbum.querySelectorAll('.photo-card').forEach(card => card.classList.add('active'));
+                    }, 1000);
+                }, 5000); // Change photos every 5 seconds
+            }
+
+            // Scroll animations
+            function setupScrollAnimations() {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.2
+                };
+
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                const sectionsToAnimate = document.querySelectorAll('.animate-on-scroll');
+                sectionsToAnimate.forEach(section => {
+                    observer.observe(section);
+                });
+            }
+
+            // Copy to clipboard function
+            window.copyToClipboard = function(elementId) {
+                const text = document.getElementById(elementId).innerText;
+                const tempInput = document.createElement('input');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+
+                // Show message box
+                messageBox.style.opacity = '1';
+                setTimeout(() => {
+                    messageBox.style.opacity = '0';
+                }, 2000);
+            };
+
+            // Prevent form submission and show confirmation (as alerts are not allowed)
+            rsvpForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, you would send this data to a server.
+                // For this static page, we'll just show a success message.
+                rsvpForm.innerHTML = `
+                    <div class="text-center py-10">
+                        <p class="text-2xl text-dark-pink font-semibold">Thank you for your response!</p>
+                        <p class="mt-4 text-gray-600">We can't wait to celebrate with you.</p>
+                    </div>
+                `;
+            });
+        });
+    </script>
+
+</body>
+</html>
